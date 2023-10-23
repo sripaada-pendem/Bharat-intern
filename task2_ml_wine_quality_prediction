@@ -1,0 +1,45 @@
+# Import necessary libraries
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
+import matplotlib.pyplot as plt
+
+# Generate or define your dataset
+# For the sake of example, let's create some random data
+np.random.seed(42)
+data = {
+    'alcohol': np.random.uniform(8, 15, 1000),
+    'pH': np.random.uniform(3, 4, 1000),
+    'quality': 5 + 2 * np.random.randn(1000)  # Simulating quality based on some features
+}
+
+df = pd.DataFrame(data)
+
+# Split the data into features (X) and target variable (y)
+X = df[['alcohol', 'pH']]
+y = df['quality']
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Create a linear regression model
+model = LinearRegression()
+
+# Fit the model to the training data
+model.fit(X_train, y_train)
+
+# Make predictions on the test set
+y_pred = model.predict(X_test)
+
+# Evaluate the model
+mse = mean_squared_error(y_test, y_pred)
+print(f'Mean Squared Error: {mse}')
+
+# Plot the predictions against the actual values
+plt.scatter(y_test, y_pred)
+plt.xlabel('Actual Quality')
+plt.ylabel('Predicted Quality')
+plt.title('Wine Quality Prediction')
+plt.show()
